@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLib | Student Login</title><style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #c8afe3, #f4f6fb);
+        color: #1e293b;
+        padding: 20px;
+    }
+
+    .login-card {
+        background: rgb(233, 231, 236);
+        width: 100%;
+        max-width: 420px;
+        padding: 35px;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(36, 59, 107, 0.12);
+    }
+
+    .logo {
+        text-align: center;
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #243b6b;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 28px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 13px;
+        margin-bottom: 20px;
+        border: 1px solid #d5dbea;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #6254d9;
+    }
+
+    button {
+        width: 100%;
+        padding: 13px;
+        background: #9943df;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #4e42bd;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 22px;
+        color: #243b6b;
+        text-decoration: none;
+    }
+
+    .note {
+        text-align: center;
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 18px;
+    }
+</style>
+
+</head><body>
+    <div class="login-card">    <div class="logo">📚</div>
+
+    <h1>Student Login</h1>
+    <p class="subtitle">Welcome back to SmartLib!</p>
+    {% if message %}
+    <p id="login-message" style="
+        text-align: center;
+        padding: 12px;
+        border-radius: 8px;
+        background: #eef2ff;
+        color: #243b6b;
+        margin-bottom: 20px;
+    ">{{ message }}</p>
+{% endif %}
+
+    <form method="POST" action="{{ url_for('student_login') }}">
+        <label for="student_id">Student ID</label>
+        <input
+            type="number"
+            id="student_id"
+            name="student_id"
+            placeholder="Enter your Student ID"
+            required
+        >
+
+        <label for="email">Email Address</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your registered email"
+            required
+        >
+
+        <button type="submit">Login</button>
+    </form>
+
+    <a href="/" class="back-link">← Back to Dashboard</a>
+
+    <p class="note">SmartLib Library Management System</p>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const message = document.getElementById("login-message");
+
+    if (message) {
+        setTimeout(function () {
+            message.style.transition = "opacity 0.5s ease";
+            message.style.opacity = "0";
+
+            setTimeout(function () {
+                message.remove();
+            }, 500);
+        }, 4000);
+    }
+});
+</script>
+
+</body>
+</html>

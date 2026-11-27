@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue & Return Books - SmartLib</title>
+    <link rel="stylesheet"
+    href="{{ url_for('static',filename='css/style.css')}}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #c8afe3;
+            margin: 0;
+            padding: 30px;
+            color: #243b64;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd4e0;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #243b64;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #34558a;
+        }
+
+         .back-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #6D28D9;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: #8759cc;
+}
+
+        
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+        h1,
+        h1+p {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    </style>
+</head>
+
+<body data-theme="{{ theme_preference|default('light') }}">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+    <div class="container">
+
+        <h1>Issue & Return Books 📚</h1>
+        <p class="subtitle">
+            Manage book borrowing and returns in your SmartLib library.
+        </p>
+
+        <div class="card">
+            <h2>📚 Issue a Book</h2>
+
+            <form method="POST" action="{{ url_for( 'issue_return')}}">
+                <label for="student_id">Student ID</label>
+                <input
+                    type="number"
+                    id="student_id"
+                    name="student_id"
+                    placeholder="Enter student ID"
+                    min="1"
+                    required
+                >
+
+                <label for="book_id">Book ID</label>
+                <input
+                    type="number"
+                    id="book_id"
+                    name="book_id"
+                    placeholder="Enter book ID"
+                    min="1"
+                    required
+                >
+
+                <label for="due_date">Due Date</label>
+                <input
+                    type="date"
+                    id="due_date"
+                    name="due_date"
+                    required
+                >
+
+                <button type="submit" name="action" value="issue">Issue Book</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>↩️ Return a Book</h2>
+
+            <form method="POST" action="{{ url_for('issue_return')}}">
+                <label for="issue_id">Issue ID</label>
+                <input
+                    type="number"
+                    id="issue_id"
+                    name="issue_id"
+                    placeholder="Enter issue ID"
+                    min="1"
+                    required
+                >
+
+                <button type="submit" name="action" value="return">Return Book</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>📚 Currently Issued Books</h2>
+
+            {% if issued_books %}
+            <div class="table-container" style="width: 100%; overflow-x: auto;">
+                
+<table class="issued-books-table"
+ style="width: 1100px; min-width: 1100px; table-layout: auto;">
+    <thead>
+        <tr>
+            <th>Issue ID</th>
+            <th>Student ID</th>
+            <th>Book ID</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in issued_books %}
+        <tr>
+            <td>{{ item.issue_id }}</td>
+            <td>{{ item.student_id }}</td>
+            <td>{{ item.book_id }}</td>
+            <td>{{ item.issue_date }}</td>
+            <td>{{ item.due_date }}</td>
+
+            <td>
+                {% if item.return_date %}
+                    {{ item.return_date }}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+
+            <td>
+                <span class="status-badge
+                    {% if item.status == 'Returned' %}
+                        status-returned
+                    {% elif item.status == 'Overdue' %}
+                        status-overdue
+                    {% else %}
+                        status-issued
+                    {% endif %}">
+                    {{ item.status }}
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+            </div>
+            {% else %}
+                <p>No active issued books found.</p>
+            {% endif %}
+        </div>
+
+
+        <div style="text-align: left; margin-top: 15px;">
+    <a href="{{ url_for('home') }}" class="back-btn">
+        ← Back to Dashboard
+    </a>
+</div>
+
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            document.querySelectorAll(".alert").forEach(function (message) {
+                message.style.transition = "opacity 0.5s ease";
+                message.style.opacity = "0";
+
+                setTimeout(function () {
+                    message.remove();
+                }, 500);
+            });
+        }, 5000);
+    });
+</script>
+</body>
+</html>
