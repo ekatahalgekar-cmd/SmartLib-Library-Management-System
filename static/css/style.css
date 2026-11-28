@@ -1,0 +1,1062 @@
+/* ===== SmartLib Premium Design ===== */
+
+:root {
+    --primary: #6D28D9;
+    --primary-dark: #4C1D95;
+    --sidebar: #241442;
+    --background: #e6e0f5;
+    --surface: #FFFFFF;
+    --text: #241B35;
+    --muted: #77718A;
+    --border: #E9E4F5;
+    --success: #15803D;
+    --danger: #DC2626;
+    --radius: 14px;
+}
+
+/* General page styling */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    margin: 0;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: var(--text);
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 21px;
+    margin-bottom: 18px;
+}
+
+/* Links */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* Forms and inputs */
+input, select, textarea {
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: rgb(217, 213, 223);
+    color: var(--text);
+    font: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12);
+}
+
+/* Buttons */
+button, .btn, .edit-btn, .add-book-btn {
+    display: inline-block;
+    padding: 10px 17px;
+    border: none;
+    border-radius: 9px;
+    background: var(--primary);
+    color: white;
+    font: inherit;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover, .btn:hover, .edit-btn:hover, .add-book-btn:hover {
+    background: var(--primary-dark);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(76, 29, 149, 0.18);
+}
+
+/* Cards and panels */
+.card, .stat-card, .dashboard-card, .form-card, .login-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: 0 4px 18px rgba(36, 20, 66, 0.05);
+    box-sizing: border-box;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+th {
+    background: #F0EAFE;
+    color: var(--primary-dark);
+    font-weight: 700;
+    text-align: left;
+}
+
+th, td {
+    padding: 13px 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+    background: #FAF8FF;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status messages */
+.success, .success-message {
+    padding: 12px 15px;
+    border-radius: 9px;
+    background: #DCFCE7;
+    color: var(--success);
+}
+
+.error, .error-message {
+    padding: 12px 15px;
+    border-radius: 9px;
+    background: #FEE2E2;
+    color: var(--danger);
+}
+
+/* Sidebar */
+.sidebar {
+    background: var(--sidebar);
+    color: white;
+}
+
+.sidebar a {
+    color: #E9DFFF;
+    display: block;
+    padding: 11px 15px;
+    border-radius: 9px;
+}
+
+.sidebar a:hover, .sidebar a.active {
+    background: rgba(196, 181, 253, 0.18);
+    color: white;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 23px;
+    }
+
+    .card, .stat-card, .dashboard-card, .form-card, .login-card {
+        padding: 16px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+/* ===== SmartLib Premium Dashboard Layout ===== */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background: #F5F3FF;
+}
+
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    box-sizing: border-box;
+    padding: 24px 16px;
+    background: linear-gradient(180deg, #241442, #38205E);
+    color: #FFFFFF;
+    box-shadow: 4px 0 20px rgba(36, 20, 66, 0.10);
+}
+
+.sidebar h1,
+.sidebar h2,
+.sidebar h3 {
+    color: #FFFFFF;
+}
+
+.sidebar a {
+    display: block;
+    margin: 5px 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #E9DFFF;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar a:hover {
+    background: rgba(196, 181, 253, 0.18);
+    color: #FFFFFF;
+    transform: translateX(3px);
+}
+
+/* Main dashboard area */
+.layout > main,
+.main-content,
+.content {
+    flex: 1;
+    min-width: 0;
+    padding: 30px;
+    box-sizing: border-box;
+    background-color: #e6e0f5;
+}
+
+/* Consistent cards */
+.stat-card,
+.dashboard-card,
+.card {
+    border: 1px solid #E9E4F5;
+    border-radius: 16px;
+    background: #c192dd;
+    box-shadow: 0 5px 20px rgba(36, 20, 66, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover,
+.dashboard-card:hover,
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(76, 29, 149, 0.10);
+}
+
+/* Dashboard headings */
+.layout main h1,
+.main-content h1,
+.content h1 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+}
+
+/* Smaller screens */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .layout > main,
+    .main-content,
+    .content {
+        padding: 18px;
+    }
+}
+/* ===== Premium SmartLib Statistics Cards ===== */
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 24px;
+    border: 1px solid #E9E4F5;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #FFFFFF, #FBF9FF);
+    box-shadow: 0 5px 18px rgba(36, 20, 66, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(109, 40, 217, 0.12);
+}
+
+.stat-card h2,
+.stat-card h3 {
+    margin-top: 0;
+    color: #6D28D9;
+}
+
+.stat-card p {
+    color: #77718A;
+    margin-bottom: 8px;
+}
+
+.stat-card .number,
+.stat-card .count {
+    color: #241442;
+    font-size: 32px;
+    font-weight: 750;
+}
+/* ===== SmartLib Book Catalog Table ===== */
+
+
+/* ===== Premium Currently Issued Books Table ===== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 24px;
+    background: #FFFFFF;
+    border: 1px solid #E9E4F5;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(36, 20, 66, 0.07);
+}
+
+.table-container table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+}
+
+/* Table headings */
+.table-container th {
+    padding: 18px 22px;
+    background: #F0EAFE;
+    color: #4C1D95;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+}
+
+/* Table cells */
+.table-container td {
+    padding: 18px 22px;
+    color: #3F3652;
+    font-size: 14px;
+    white-space: nowrap;
+    border-bottom: 1px solid #F0ECF8;
+    vertical-align: middle;
+}
+
+/* Separate the Issue Date column */
+.table-container th:nth-child(4),
+.table-container td:nth-child(4) {
+    padding-right: 35px;
+}
+
+/* Separate the Due Date column */
+.table-container th:nth-child(5),
+.table-container td:nth-child(5) {
+    padding-left: 35px;
+}
+
+/* Date values */
+.table-container td:nth-child(4),
+.table-container td:nth-child(5) {
+    font-variant-numeric: tabular-nums;
+    color: #4C1D95;
+    font-weight: 500;
+}
+
+/* Row hover effect */
+.table-container tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table-container tbody tr:hover {
+    background: #FAF8FF;
+}
+
+/* Remove the bottom border from the final row */
+.table-container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== SmartLib Issued Books - Premium Table ===== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 24px;
+    background: #FFFFFF;
+    border: 1px solid #E5DDF5;
+    border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(36, 20, 66, 0.07);
+}
+
+.table-container table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+/* Column widths */
+.table-container th:nth-child(1),
+.table-container td:nth-child(1) {
+    width: 12%;
+}
+
+.table-container th:nth-child(2),
+.table-container td:nth-child(2),
+.table-container th:nth-child(3),
+.table-container td:nth-child(3) {
+    width: 15%;
+}
+
+.table-container th:nth-child(4),
+.table-container td:nth-child(4),
+.table-container th:nth-child(5),
+.table-container td:nth-child(5) {
+    width: 29%;
+}
+
+/* Table heading */
+.table-container thead th {
+    padding: 17px 20px;
+    background: #F0EAFE;
+    color: #4C1D95;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid #E5DDF5;
+}
+
+/* Table cells */
+.table-container tbody td {
+    padding: 19px 20px;
+    color: #3F3652;
+    font-size: 14px;
+    white-space: nowrap;
+    border-bottom: 1px solid #F0ECF8;
+    vertical-align: middle;
+}
+
+/* Clearly separate Issue Date and Due Date */
+.table-container th:nth-child(4),
+.table-container td:nth-child(4) {
+    padding-right: 32px;
+    border-right: 1px solid #E9E4F5;
+}
+
+.table-container th:nth-child(5),
+.table-container td:nth-child(5) {
+    padding-left: 32px;
+}
+
+/* Make date values easy to read */
+.table-container td:nth-child(4),
+.table-container td:nth-child(5) {
+    font-variant-numeric: tabular-nums;
+    color: #4C1D95;
+    font-weight: 500;
+}
+
+/* Subtle row hover */
+.table-container tbody tr:hover {
+    background: #FAF8FF;
+}
+
+.table-container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== SmartLib Issued Books - Premium Table ===== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 24px;
+    background: #FFFFFF;
+    border: 1px solid #E5DDF5;
+    border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(36, 20, 66, 0.07);
+}
+
+.table-container table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+/* Column widths */
+.table-container th:nth-child(1),
+.table-container td:nth-child(1) {
+    width: 12%;
+}
+
+.table-container th:nth-child(2),
+.table-container td:nth-child(2),
+.table-container th:nth-child(3),
+.table-container td:nth-child(3) {
+    width: 15%;
+}
+
+.table-container th:nth-child(4),
+.table-container td:nth-child(4),
+.table-container th:nth-child(5),
+.table-container td:nth-child(5) {
+    width: 29%;
+}
+
+/* Table heading */
+.table-container thead th {
+    padding: 17px 20px;
+    background: #F0EAFE;
+    color: #4C1D95;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid #E5DDF5;
+}
+
+/* Table cells */
+.table-container tbody td {
+    padding: 19px 20px;
+    color: #3F3652;
+    font-size: 14px;
+    white-space: nowrap;
+    border-bottom: 1px solid #F0ECF8;
+    vertical-align: middle;
+}
+
+/* Clearly separate Issue Date and Due Date */
+.table-container th:nth-child(4),
+.table-container td:nth-child(4) {
+    padding-right: 32px;
+    border-right: 1px solid #E9E4F5;
+}
+
+.table-container th:nth-child(5),
+.table-container td:nth-child(5) {
+    padding-left: 32px;
+}
+
+/* Make date values easy to read */
+.table-container td:nth-child(4),
+.table-container td:nth-child(5) {
+    font-variant-numeric: tabular-nums;
+    color: #4C1D95;
+    font-weight: 500;
+}
+
+/* Subtle row hover */
+.table-container tbody tr:hover {
+    background: #FAF8FF;
+}
+
+.table-container tbody tr:last-child td {
+    border-bottom: none;
+}
+/* SmartLib - Currently Issued Books table */
+
+.table-container {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: scroll;
+    box-sizing: border-box;
+}
+
+.issued-books-table {
+    width: 1100px;
+    min-width: 1100px;
+    table-layout: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #ffffff;
+}
+
+.issued-books-table th,
+.issued-books-table td {
+    padding: 16px 20px;
+    text-align: left;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.alert {
+    animation: smartlibHideMessage 0.5s ease 5s forwards;
+}
+
+@keyframes smartlibHideMessage {
+    to {
+        opacity:0;
+        visibility:hidden;
+    }
+}
+/* Centered success and error messages */
+.alert {
+    padding: 15px 25px;
+    margin: 20px auto;
+    width: fit-content;
+    max-width: 90%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Green success message */
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #a8d5b5;
+}
+
+/* Red error message */
+.alert-error,
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f1b0b7;
+}
+/* SmartLib - Issued and Overdue Status Badges */
+
+/* SmartLib - Issued and Overdue Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-issued {
+    background-color: #DBEAFE !important;
+    color: #1D4ED8 !important;
+    border: 1px solid #BFDBFE;
+}
+
+.status-overdue {
+    background-color: #FEE2E2 !important;
+    color: #B91C1C !important;
+    border: 1px solid #FECACA;
+}
+.student-card-link{
+    display:block;
+    color:inherit;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    cursor:pointer;
+}
+
+.student-card-link:hover{
+    transform: translateY(-5px);
+    box-shadow:0 10px 25px rgba(50,30,80,0.15);
+
+}
+
+.student-card-link span{
+    display:inline-block;
+    margin-top:10px;
+    color:#6d2829;
+    font-weight: bold;
+}
+.status-badge {
+    padding:6px 14px;
+    border-radius:20px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+}
+.status-badge.overdue {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+.status-badge.due {
+    background-color: #ffedd5;
+    color: #ea580c;
+}
+.status-badge.due-soon {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+.status-badge.issued {
+    background-color: #dcfce7;
+    color: #15803d;
+
+}
+.status-badge.returned {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+.profile-container {
+    position: relative;
+}
+
+.profile {
+    background: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #4C1D95;
+    font-weight: 600;
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 190px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+}
+
+.profile-menu a {
+    display: block;
+    padding: 13px 15px;
+    text-decoration: none;
+    color: #241442;
+}
+
+.profile-menu a:hover {
+    background: #F5F3FF;
+    color: #6D28D9;
+}
+
+.profile-menu.show {
+    display: block;
+}
+.flash-message.success {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 12px 20px;
+    border: 1px solid #86efac;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    margin: 15px 0;
+    transition: opacity 0.5s ease;
+}
+.status-returned {
+    background: #dcfce7;
+    color: #166534;
+}
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.issued-books-table {
+    min-width: 900px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* =================================
+   SMARTLIB GLOBAL DARK MODE
+================================= */
+
+body[data-theme="dark"] {
+    --primary: #A78BFA;
+    --primary-dark: #8B5CF6;
+    --sidebar: #130C24;
+    --background: #171225;
+    --surface: #251C38;
+    --text: #F3EEFF;
+    --muted: #B8AEC9;
+    --border: #403451;
+    --success: #4ADE80;
+    --danger: #F87171;
+
+    background: var(--background) !important;
+    color: var(--text) !important;
+}
+
+/* Main page backgrounds */
+body[data-theme="dark"] .layout,
+body[data-theme="dark"] .layout > main,
+body[data-theme="dark"] .main-content,
+body[data-theme="dark"] .content {
+    background: var(--background) !important;
+    color: var(--text) !important;
+}
+
+/* Sidebar */
+body[data-theme="dark"] .sidebar {
+    background: linear-gradient(180deg, #10091F, #25163D) !important;
+    color: #FFFFFF !important;
+}
+
+/* Cards */
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .stat-card,
+body[data-theme="dark"] .dashboard-card,
+body[data-theme="dark"] .form-card {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+}
+
+/* Headings and text */
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] p,
+body[data-theme="dark"] label,
+body[data-theme="dark"] span {
+    color: var(--text);
+}
+
+/* Tables */
+body[data-theme="dark"] table,
+body[data-theme="dark"] .table-container,
+body[data-theme="dark"] .issued-books-table {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+}
+
+body[data-theme="dark"] th {
+    background: #34264B !important;
+    color: #D8C8FF !important;
+    border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] td {
+    background: var(--surface);
+    color: #E9E2F5 !important;
+    border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] tbody tr:hover {
+    background: #382B4D !important;
+}
+
+/* Forms */
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea {
+    background: #302642 !important;
+    color: #FFFFFF !important;
+    border-color: #59466F !important;
+}
+
+body[data-theme="dark"] input::placeholder,
+body[data-theme="dark"] textarea::placeholder {
+    color: #B8AEC9 !important;
+}
+
+/* Profile menu */
+body[data-theme="dark"] .profile,
+body[data-theme="dark"] .profile-menu {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] .profile-menu a {
+    color: var(--text) !important;
+}
+
+body[data-theme="dark"] .profile-menu a:hover {
+    background: #382B4D !important;
+}
+
+/* Links */
+body[data-theme="dark"] a {
+    color: #C4B5FD;
+}
+
+/* Account settings */
+body[data-theme="dark"] .settings-card,
+body[data-theme="dark"] .setting-item {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] .settings-card h2,
+body[data-theme="dark"] .settings-card h3,
+body[data-theme="dark"] .setting-item strong {
+    color: #C4B5FD !important;
+}
+
+body[data-theme="dark"] .settings-card .subtitle,
+body[data-theme="dark"] .setting-item span {
+    color: var(--text) !important;
+}
+/* Account Settings Messages */
+
+.settings-message {
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    animation: messageFade 3s forwards;
+}
+
+.settings-message.success {
+    background: #DCFCE7;
+    color: #166534;
+    border: 1px solid #86EFAC;
+}
+
+.settings-message.error {
+    background: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FCA5A5;
+}
+
+@keyframes messageFade {
+    0%, 75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+@keyframes passwordMessageFade {
+    0%, 80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+/* Available Book Status - Green */
+
+.status.available {
+    background-color: #DCFCE7 !important;
+    color: #166534 !important;
+    border: 1px solid #86EFAC;
+}
+.book-item .badge.available {
+    background-color: #dcfce7 !important;
+    color: #166534 !important;
+    border: 1px solid #86efac;
+}
+.badge.available {
+    background-color: #DCFCE7 !important;
+    color: #166534 !important;
+    border: 1px solid #86EFAC !important;
+}
+/* FINAL SMARTLIB HEADER FIX */
+
+.topbar {
+    display: block !important;
+    width: 100% !important;
+}
+
+.dashboard-header {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    min-height: 250px !important;
+    padding: 20px 10px !important;
+    box-sizing: border-box !important;
+}
+
+/* Centre the complete heading */
+.dashboard-header .dashboard-brand {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding-top: 25px !important;
+    text-align: center !important;
+}
+
+/* Large book icon */
+.dashboard-header .brand-icon {
+    width: 85px !important;
+    height: 85px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto 15px !important;
+    font-size: 55px !important;
+    background: #EDE9FE !important;
+    border-radius: 22px !important;
+}
+
+/* Main heading */
+.dashboard-header .dashboard-brand h1 {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 30px !important;
+    color: #4C1D95 !important;
+    margin: 8px 0 !important;
+}
+
+/* Two small sentences */
+.dashboard-header .dashboard-brand p {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    color: #777 !important;
+    margin: 5px 0 !important;
+}
+
+/* Library Guest at top-right */
+.dashboard-header .profile-container {
+    position: absolute !important;
+    top: 15px !important;
+    right: 25px !important;
+    left: auto !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+}
+.fine-card {
+    background: white;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.fine-card h2 {
+    color: #4C1D95;
+}
+
+.fine-card h1 {
+    color: #DC2626;
+    font-size: 32px;
+}
+
+.fine-card table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.fine-card th,
+.fine-card td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}

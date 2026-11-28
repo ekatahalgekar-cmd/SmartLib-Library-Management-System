@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLib | Notifications</title><style>
+    body {
+        margin: 0;
+        padding: 30px;
+        font-family: Arial, sans-serif;
+        background: #c8afe3;
+        color: #1e293b;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    h1, h2 {
+        color: #243b6b;
+    }
+
+    .back-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #6D28D9;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: #4C1D95;
+}
+
+    .card {
+        background: white;
+        padding: 22px;
+        border-radius: 12px;
+        margin-bottom: 18px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        border-left: 5px solid #6254d9;
+    }
+
+    .card h3 {
+        margin-top: 0;
+    }
+
+    .overdue {
+        border-left-color: #dc2626;
+    }
+
+    .upcoming {
+        border-left-color: #f59e0b;
+    }
+
+    .returned {
+        border-left-color: #16a34a;
+    }
+
+    .note {
+        color: #101112;
+        font-size: 14px;
+    }
+    h1 {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        text-align: center !important;
+        gap: 10px;
+        margin-left: auto !important;
+        margin-left: auto !important;
+    }
+</style>
+
+</head><body data-theme="{{ theme_preference|default('light') }}">
+<div class="container"><div class="header">
+    <h1>🔔 Notifications</h1>
+    
+</div>
+
+
+<div class="card overdue">
+    <h3>🚨 Overdue Books ({{ overdue_books|length }})</h3>
+
+    {% for book in overdue_books %}
+        <p>
+            <strong>Book:</strong> {{ book[1] }}<br>
+
+            <strong>Student:</strong> {{ book[2] }}<br>
+
+            <strong>Due Date:</strong> {{ book[3] }}<br>
+
+            <strong>Fine Amount:</strong>
+            <span style="color: #dc2626; font-weight: bold;">
+                ₹{{ book[4] }}
+            </span><br>
+
+            <strong>Payment Status:</strong>
+
+            {% if book[5] == 'Paid' %}
+                <span style="color: green; font-weight: bold;">
+                    Paid ✓
+                </span>
+            {% else %}
+                <span style="color: red; font-weight: bold;">
+                    Unpaid
+                </span>
+
+                <form method="POST"
+                      action="{{ url_for('mark_fine_paid', issue_id=book[0]) }}"
+                      style="margin-top: 10px;">
+
+                    <button type="submit"
+                            style="background: #16a34a;
+                                   color: white;
+                                   padding: 9px 16px;
+                                   border: none;
+                                   border-radius: 7px;
+                                   cursor: pointer;"
+                            onclick="return confirm('Confirm that the student has paid ₹100?')">
+                        Mark as Paid ✓
+                    </button>
+                </form>
+            {% endif %}
+        </p>
+        <hr>
+    {% else %}
+        <p>No overdue books. Great job!</p>
+    {% endfor %}
+</div>
+
+
+<div class="card upcoming">
+    <h3>⏰ Upcoming Due Dates ({{ upcoming_books|length }})</h3>
+
+    {% for book in upcoming_books %}
+        <p>
+            <strong>Book:</strong> {{ book[1] }}<br>
+            <strong>Student:</strong> {{ book[2] }}<br>
+            <strong>Due Date:</strong> {{ book[3] }}
+        </p>
+        <hr>
+    {% else %}
+        <p>No books are due within the next three days.</p>
+    {% endfor %}
+</div>
+
+<div class="card returned">
+    <h3>✅ Returned Books ({{ returned_books|length }})</h3>
+
+    {% for book in returned_books %}
+        <p>
+            <strong>Book:</strong> {{ book[1] }}<br>
+            <strong>Student:</strong> {{ book[2] }}<br>
+            <strong>Return Date:</strong> {{ book[3] }}
+        </p>
+        <hr>
+    {% else %}
+        <p>No returned books to display.</p>
+    {% endfor %}
+</div>
+<div style="text-align: left; margin-top: 15px;">
+    <a href="{{ url_for('home') }}" class="back-btn">
+        ← Back to Dashboard
+    </a>
+</div>
+
+<footer style="text-align: center; margin-top: 35px;">
+    SmartLib helps librarians keep track of book returns and due dates.
+</footer>
+
+</div>
+
+</body>
+</html>

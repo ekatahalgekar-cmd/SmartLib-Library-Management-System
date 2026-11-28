@@ -1,22 +1,30 @@
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template,request,redirect,url_for,session,flash
+import os
 import mysql.connector
+from dotenv import load_dotenv 
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+
+load_dotenv()
+
 
 app = Flask(__name__)
+app.config["SECRET_KEY"]=os.getenv("SECRET_KEY")
+print("Secret key loaded:",bool(app.config["SECRET_KEY"]))
+
+app.secret_key= os.getenv("SECRET_KEY")
+def get_db_connection():
+    conn = mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+        )
+    return conn
 @app.context_processor
 def inject_theme():
     return {
         "theme_preference": session.get("theme_preference", "light")
     }
-app.secret_key= "smartlib-dev-key-change-before-deployment"
-def get_db_connection():
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="462006",
-        database="smartlib"
-        )
-    return conn
 @app.before_request
 def apply_overdue_fines():
 

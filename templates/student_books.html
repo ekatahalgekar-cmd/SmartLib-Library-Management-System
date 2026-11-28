@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Available Books | SmartLib</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            background: #e3d7ee;
+            font-family: Arial, sans-serif;
+        }
+
+        .books-container {
+            max-width: 950px;
+            margin: 45px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(76,29,149,0.10);
+        }
+
+        h1 {
+            color: #4C1D95;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #DDD6FE;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            background: #F5F3FF;
+            padding: 18px;
+            margin-bottom: 13px;
+            border-radius: 12px;
+            border-left: 4px solid #8B5CF6;
+        }
+
+        .book-item h3 {
+            color: #4C1D95;
+            margin-bottom: 7px;
+        }
+
+        .book-item p {
+            color: #666;
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        .available {
+            color: #166534;
+            background: #DCFCE7;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .unavailable {
+            color: #991B1B;
+            background: #FEE2E2;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #EDE9FE;
+            color: #4C1D95;
+            text-decoration: none;
+            border-radius: 9px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #DDD6FE;
+            transform: translateY(-2px);
+        }
+
+        @media(max-width: 600px) {
+            .books-container {
+                margin: 20px 12px;
+                padding: 20px;
+            }
+
+            .book-item {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="books-container">
+
+    <h1>📚 Available Books</h1>
+
+    <p class="subtitle">
+        Welcome, {{ student_name }}! Explore books in the SmartLib library.
+    </p>
+
+    <input type="text"
+           id="bookSearch"
+           class="search-input"
+           placeholder="Search by book title, author or category...">
+
+    <div id="bookList">
+
+        {% for book in books %}
+
+        <div class="book-item">
+
+            <div>
+                <h3>{{ book[1] }}</h3>
+
+                <p>Author: {{ book[2] }}</p>
+
+                <p>Category: {{ book[3] }}</p>
+
+                <p>Available Copies: {{ book[4] }}</p>
+            </div>
+
+            {% if book[4] > 0 %}
+                <span class="available">Available</span>
+            {% else %}
+                <span class="unavailable">Out of Stock</span>
+            {% endif %}
+
+        </div>
+
+        {% else %}
+
+        <p style="text-align:center; padding:25px;">
+            No books available in the library.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+    <p id="noResults"
+       style="display:none; text-align:center; color:#991B1B;">
+        No matching books found.
+    </p>
+
+    <a href="{{ url_for('student_dashboard') }}"
+       class="back-btn">
+        ← Back to Student Dashboard
+    </a>
+
+</div>
+
+<script>
+document.getElementById("bookSearch").addEventListener("input", function() {
+
+    const search = this.value.toLowerCase().trim();
+
+    const books = document.querySelectorAll(".book-item");
+
+    let found = 0;
+
+    books.forEach(function(book) {
+
+        if (book.textContent.toLowerCase().includes(search)) {
+            book.style.display = "flex";
+            found++;
+        } else {
+            book.style.display = "none";
+        }
+
+    });
+
+    document.getElementById("noResults").style.display =
+        found === 0 && books.length > 0 ? "block" : "none";
+
+});
+</script>
+
+</body>
+</html>

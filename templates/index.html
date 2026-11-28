@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartLib | Library Management System</title>
+    <link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css')}}">
+
+<style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #d3a8e4;
+            color: #243047;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 245px;
+            background: #241442;
+            color: white;
+            padding: 25px 16px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            padding: 8px;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #8955d6;
+        }
+
+        .menu-title {
+            color: #9db0c9;
+            font-size: 12px;
+            margin: 20px 10px 12px;
+            text-transform: uppercase;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #dbe5f2;
+            text-decoration: none;
+            padding: 14px 12px;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #25466c;
+            color: #55d6be;
+        }
+
+        /* Main area */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 28px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #7b8798;
+            font-size: 14px;
+        }
+
+        .profile {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #142b4a0d;
+        }
+
+        /* Welcome banner */
+        .welcome {
+            background: linear-gradient(120deg, #a177e1, #267b91);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 28px;
+        }
+
+        .welcome h2 {
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .welcome p {
+            line-height: 1.7;
+            color: #e3f5fa;
+            margin-bottom: 20px;
+        }
+
+        .welcome button {
+            background: #7c3aed;
+            color: #142b4a;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Statistics */
+        .section-heading {
+            font-size: 20px;
+            margin-bottom: 18px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 13px;
+            box-shadow: 0 4px 15px rgba(91,33,182,0.08);
+            border: 1px solid #edf0f5;
+        }
+
+        .stat-icon {
+            font-size: 27px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card p {
+            color: #7b8798;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card h3 {
+            font-size: 29px;
+        }
+
+        /* Content cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 13px;
+            padding: 23px;
+            border: 1px solid #edf0f5;
+            box-shadow: 0 6px 20px rgba(91,33,182,0.08);
+        }
+
+        .panel h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid #dce3ec;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #267b91;
+        }
+
+        .search-box button {
+            padding: 12px 16px;
+            background: #17365d;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ddfb;
+        }
+
+        .book-item:last-child {
+            border-bottom: none;
+        }
+
+        .book-item h3 {
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .book-item p {
+            font-size: 12px;
+            color: #7b8798;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: #ede5ff;
+            color: #6d28d9;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .quick-link {
+            display: block;
+            text-decoration: none;
+            color: #243047;
+            padding: 15px 0;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .quick-link:last-child {
+            border-bottom: none;
+        }
+
+        .quick-link span {
+            color: #267b91;
+            margin-right: 10px;
+        }
+
+        .message {
+            color: #267b91;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        footer {
+            text-align: center;
+            color: #7b8798;
+            padding: 25px 10px 5px;
+            font-size: 12px;
+        }
+
+        /* Tablet and mobile */
+        @media (max-width: 1050px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            .sidebar a {
+                display: inline-block;
+                padding: 10px;
+                margin: 2px;
+            }
+
+            .menu-title {
+                display: none;
+            }
+
+            .main {
+                padding: 17px;
+            }
+
+            .topbar h1 {
+                font-size: 23px;
+            }
+
+            .welcome {
+                padding: 22px;
+            }
+
+            .welcome h2 {
+                font-size: 21px;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-card h3 {
+                font-size: 24px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+        }
+        /* SmartLib - Modern UI Enhancements */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.book-item,
+.stat-card,
+.panel,
+.quick-link {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover,
+.book-item:hover,
+.panel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(20, 40, 80, 0.10);
+}
+
+.quick-link:hover {
+    transform: translateX(4px);
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid #27b5a6;
+    outline-offset: 3px;
+}
+/* Fix dashboard header alignment */
+
+.topbar {
+    display: block !important;
+    width: 100%;
+}
+
+.topbar > div {
+    width: 100%;
+}
+
+.dashboard-header {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    min-height: 240px;
+    box-sizing: border-box;
+    padding: 20px 15px 25px;
+}
+
+/* Centre SmartLib branding */
+.dashboard-brand {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+    padding-top: 20px;
+}
+
+.dashboard-brand .brand-icon {
+    width: 85px !important;
+    height: 85px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto 12px !important;
+    border-radius: 22px;
+    background: #EDE9FE;
+    font-size: 55px !important;
+    box-shadow: 0 5px 15px rgba(76,29,149,0.15);
+}
+
+.dashboard-brand h1 {
+    width: 100%;
+    text-align: center !important;
+    color: #4C1D95;
+    font-size: 30px;
+    margin: 8px 0;
+}
+
+.dashboard-brand p {
+    width: 100%;
+    text-align: center !important;
+    font-size: 13px;
+    color: #777;
+    margin: 5px 0;
+}
+
+/* Library Guest at extreme top-right */
+.dashboard-header .profile-container {
+    position: absolute !important;
+    top: 15px !important;
+    right: 25px !important;
+    left: auto !important;
+    z-index: 1000;
+}
+
+@media (max-width: 650px) {
+    .dashboard-header {
+        padding-top: 65px;
+    }
+
+    .dashboard-header .profile-container {
+        top: 5px !important;
+        right: 10px !important;
+    }
+
+    .dashboard-brand h1 {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+
+
+
+    
+
+<body data-theme="{{ theme_preference|default('light') }}">
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+    <div class="logo">📚 Smart<span>Lib</span></div>
+
+    <p class="menu-title">Main Menu</p>
+
+    <a href="{{ url_for('home') }}" class="active">▦ &nbsp; Dashboard</a>
+
+    <a href="{{ url_for('book_catalog') }}">📚 &nbsp; Book Catalogue</a>
+
+    <a href="{{ url_for('students') }}">👥 &nbsp; Students</a>
+
+    <a href="{{ url_for('issue_return') }}">🔄 &nbsp; Issue and Return</a>
+
+    <a href="{{ url_for('notifications') }}">🔔 &nbsp; Notifications</a>
+
+    <p class="menu-title">Account</p>
+
+<a href="{{ url_for('student_login') }}">🎓 &nbsp; Student Login</a>
+
+{% if session.get('librarian_logged_in') %}
+
+    <a href="{{ url_for('librarian_profile') }}">👤 &nbsp; Librarian Profile</a>
+
+    <a href="{{ url_for('account_settings') }}">⚙️ &nbsp; Account Settings</a>
+
+    <a href="{{ url_for('librarian_logout') }}">🚪 &nbsp; Logout</a>
+
+{% else %}
+
+    <a href="{{ url_for('librarian_login') }}">🔐 &nbsp; Librarian Login</a>
+
+{% endif %}
+</aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                
+<div class="dashboard-header">
+
+    <!-- Centre Heading -->
+    <div class="dashboard-brand">
+        <div class="brand-icon">📚</div>
+
+        <h1>SmartLib Dashboard</h1>
+
+        
+        <p>Welcome to your smart library workspace.</p>
+    </div>
+
+    <!-- Top Right Profile -->
+    <div class="profile-container">
+
+        <button class="profile" onclick="toggleProfileMenu()">
+            👤 Library Guest ▼
+        </button>
+
+        <div class="profile-menu" id="profileMenu">
+            <a href="{{ url_for('librarian_profile') }}">👤 Librarian Profile</a>
+            <a href="{{ url_for('account_settings') }}">⚙️ Account Settings</a>
+            <a href="{{ url_for('librarian_logout') }}">🚪 Logout</a>
+        </div>
+
+    </div>
+
+</div>
+
+
+        </header>
+
+        <!-- Welcome banner -->
+        <section class="welcome">
+
+            <h2>Welcome to SmartLib! 👋</h2>
+
+            <p>
+                Discover your next favourite book, explore the catalogue,
+                and keep track of your borrowing journey.
+            </p>
+
+            <button onclick="goToBooks()">
+                Explore Books →
+            </button>
+
+        </section>
+
+        <!-- Dashboard statistics -->
+        <h2 class="section-heading">Library Overview</h2>
+
+        
+<section class="stats">
+
+    <a href="{{ url_for('book_catalog') }}" class="stat-card stat-card-link">
+        <div class="stat-icon">📚</div>
+        <p>Total Books</p>
+        <h3>{{ total_books }}</h3>
+    </a>
+
+    <a href="{{ url_for('book_catalog') }}" class="stat-card stat-card-link">
+        <div class="stat-icon">✅</div>
+        <p>Available Books</p>
+        <h3>{{ available_books }}</h3>
+    </a>
+
+    <a href="{{ url_for('issue_return') }}" class="stat-card stat-card-link">
+        <div class="stat-icon">📖</div>
+        <p>Issued Books</p>
+        <h3>{{ issued_count }}</h3>
+    </a>
+
+    <a href="{{ url_for('notifications') }}" class="stat-card stat-card-link">
+        <div class="stat-icon">⏰</div>
+        <p>Overdue Books</p>
+        <h3>{{ overdue_count }}</h3>
+    </a>
+
+    <a href="{{ url_for('students') }}" class="stat-card stat-card-link">
+        <div class="stat-icon">👨‍🎓</div>
+        <p>Total Students</p>
+        <h3>{{ total_students }}</h3>
+    </a>
+
+    <a href="{{ url_for('students') }}" class="stat-card stat-card-link">
+        <div class="stat-icon">🟢</div>
+        <p>Active Students</p>
+        <h3>{{ active_students }}</h3>
+    </a>
+
+</section>
+
+
+        <!-- Book catalogue and quick actions -->
+        <section class="content-grid">
+
+            <div class="panel" id="books">
+
+                <h2>📚 Explore Book Catalogue</h2>
+
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        id="bookSearch"
+                        placeholder="Search by title or author..."
+                    >
+
+                    <button onclick="searchBooks()">Search</button>
+
+                </div>
+
+                <p id="searchMessage" class="message"></p>
+
+<div id="bookList">
+
+    {% for book in recent_books %}
+
+    <div class="book-item">
+
+        <div>
+            <h3>{{ book[1] }}</h3>
+            <p>Author: {{ book[2] }} · {{ book[3] }}</p>
+        </div>
+
+        {% if book[4] > 0 %}
+            <span class="badge available">Available</span>
+        {% else %}
+            <span class="badge">Out of Stock</span>
+        {% endif %}
+
+    </div>
+
+    {% else %}
+
+    <div class="book-item">
+        <div>
+            <h3>No books available</h3>
+            <p>Add books to your library database to display them here.</p>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+            </div>
+
+            <div class="panel">
+
+                <h2>⚡ Quick Actions</h2>
+                <a class="quick-link" href="{{ url_for('book_catalog') }}">
+    <span>📚</span> Browse Books
+</a>
+
+<a class="quick-link" href="{{ url_for('issue_return') }}">
+    <span>🔄</span> Issue or Return Books
+</a>
+
+<a class="quick-link" href="{{ url_for('notifications') }}">
+    <span>🔔</span> View Notifications
+</a>
+
+<a class="quick-link" href="{{ url_for('student_login') }}">
+    <span>👤</span> Student Login
+</a>
+
+<a class="quick-link" href="{{ url_for('librarian_login') }}">
+    <span>🔐</span> Librarian Login
+</a>
+
+            </div>
+
+        </section>
+
+        <footer>
+            SmartLib · Smart Library Management System · College Mini Project
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+    function goToBooks() {
+        document.getElementById("books").scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+
+    function searchBooks() {
+        const input = document.getElementById("bookSearch");
+        const searchText = input.value.trim().toLowerCase();
+        const bookItems = document.querySelectorAll(".book-item");
+        const message = document.getElementById("searchMessage");
+
+        let found = 0;
+
+        bookItems.forEach(function(book) {
+            const bookText = book.textContent.toLowerCase();
+
+            if (bookText.includes(searchText)) {
+                book.style.display = "flex";
+                found++;
+            } else {
+                book.style.display = "none";
+            }
+        });
+
+        if (searchText === "") {
+            bookItems.forEach(function(book) {
+                book.style.display = "flex";
+            });
+
+            message.textContent = "Enter a title or author to search.";
+        } else if (found === 0) {
+            message.textContent = "No matching books found.";
+        } else {
+            message.textContent = found + " matching book(s) found.";
+        }
+    }
+
+    document.getElementById("bookSearch").addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                searchBooks();
+            }
+        }
+    );
+    // Search automatically while typing
+    document.getElementById("bookSearch").addEventListener(
+    "input",
+    function() {
+        searchBooks();
+    }
+);
+</script>
+<script>
+function toggleProfileMenu() {
+    document.getElementById("profileMenu").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>

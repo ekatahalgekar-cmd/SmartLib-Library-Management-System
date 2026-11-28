@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | SmartLib</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"><style>
+    .student-dashboard {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 30px;
+    }
+
+    .student-welcome {
+        background: linear-gradient(135deg, #d787e1, #8B5CF6);
+        color: rgb(26, 23, 23);
+        padding: 30px;
+        border-radius: 18px;
+        margin-bottom: 28px;
+    }
+
+    .student-welcome h1 {
+        margin-top: 0;
+    }
+
+    .student-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 22px;
+        margin-bottom: 28px;
+    }
+
+    .student-card {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(50, 30, 80, 0.08);
+    }
+
+    .student-card h2 {
+        color: #a05839fd;
+        font-size: 19px;
+    }
+
+    .student-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 25px;
+    }
+
+    .student-actions a {
+        display: inline-block;
+        padding: 12px 20px;
+        background: #ab89e2;
+        color: rgb(10, 9, 9);
+        text-decoration: none;
+        border-radius: 9px;
+    }
+
+    .student-actions a:hover {
+        background: #a381d7;
+    }
+</style>
+
+</head><body>
+    <main class="student-dashboard">    <section class="student-welcome">
+        <h1>Welcome, {{ student_name }}!</h1>
+        <p>Your personal SmartLib student dashboard.</p>
+        <p>Student ID: {{ student_id }}</p>
+    </section>
+
+    <section class="student-cards">
+       <a href="{{ url_for('student_books') }}"
+   class="student-card student-card-link">
+
+    <h2>📚 Available Books</h2>
+
+    <p>View books available in the SmartLib library.</p>
+
+    <span>Browse Available Books →</span>
+
+</a>
+
+        <a href="{{ url_for('my_borrowed_books') }}" class="student-card student-card-link">
+    <h2>📖 My Borrowed Books</h2>
+    <p>Check the books you have borrowed and their due dates.</p>
+    <span>View Borrowed Books →</span>
+</a>
+
+        
+<a href="{{ url_for('student_due_dates') }}" class="student-card student-card-link">
+    <h2>📅 Due Dates</h2>
+    <p>Check your book return due dates.</p>
+    <span>View Due Dates →</span>
+</a>
+
+    </section>
+    <!-- Overdue Fine Section -->
+<div class="fine-card">
+
+    <h2>💰 My Overdue Fine</h2>
+
+    <h1>₹{{ "%.2f"|format(total_fine) }}</h1>
+
+    {% if fine_details %}
+
+        <h3>Fine Details</h3>
+
+        <table>
+            <tr>
+                <th>Book Name</th>
+                <th>Due Date</th>
+                <th>Fine</th>
+            </tr>
+
+            {% for book in fine_details %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.due_date }}</td>
+                <td>₹{{ book.fine_amount }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+        <p style="color:red;">
+            You have pending overdue fines.
+        </p>
+
+    {% else %}
+
+        <p style="color:green;">
+            No overdue fines. Keep borrowing books!
+        </p>
+
+    {% endif %}
+
+</div>
+
+    <div class="student-actions">
+        
+        <a href="{{ url_for('home') }}">Main Dashboard</a>
+        <a href="{{ url_for('student_logout') }}">Logout</a>
+    </div>
+
+</main>
+
+</body>
+</html>

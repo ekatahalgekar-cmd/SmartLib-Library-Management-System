@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Settings - SmartLib</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            background: #c5a9e3;
+            font-family: Arial, sans-serif;
+        }
+
+        .settings-card {
+            max-width: 600px;
+            margin: 55px auto;
+            padding: 40px;
+            background: rgb(255, 255, 255);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(76,29,149,0.12);
+            border: 1px solid #EDE9FE;
+        }
+
+        .settings-icon {
+            text-align: center;
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4C1D95;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .setting-item {
+            background: #F5F3FF;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #8B5CF6;
+        }
+
+        .setting-item strong {
+            display: block;
+            color: #6D28D9;
+            margin-bottom: 8px;
+        }
+
+        .setting-item span {
+            color: #241442;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            padding: 12px 25px;
+            background: #EDE9FE;
+            color: #4C1D95;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #DDD6FE;
+        }
+        .settings-message {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    transition: opacity 0.5s ease;
+}
+
+.settings-message.success {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.settings-message.error {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+.notification-btn {
+    width: 100%;
+    padding: 13px;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.disable-btn {
+    background: #DC2626;
+}
+
+.disable-btn:hover {
+    background: #B91C1C;
+}
+
+.enable-btn {
+    background: #6D28D9;
+}
+
+.enable-btn:hover {
+    background: #4C1D95;
+}
+.theme-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.theme-btn {
+    flex: 1;
+    padding: 13px;
+    border: 2px solid #8a79d6;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #F5F3FF;
+    color: #7651ad;
+    transition: 0.3s;
+}
+
+.theme-btn:hover {
+    background: #EDE9FE;
+}
+
+.theme-btn.active {
+    background: #6D28D9;
+    color: white;
+    border-color: #6D28D9;
+}
+    </style>
+</head>
+
+<body data-theme="{{ theme_preference|default('light') }}">
+
+<div class="settings-card">
+
+    <div class="settings-icon">⚙️</div>
+
+    <h2>Account Settings</h2>
+
+    <p class="subtitle">
+        Manage your SmartLib account information.
+    </p>
+
+    <div class="setting-item">
+        <strong>Username</strong>
+        <span>{{ librarian_name }}</span>
+    </div>
+
+    <div class="setting-item">
+        <strong>Account Role</strong>
+        <span>Library Administrator</span>
+    </div>
+
+    <div class="setting-item">
+        <strong>Account Status</strong>
+        <span>Active</span>
+    </div>
+
+    <div class="setting-item">
+        <strong>System</strong>
+        <span>SmartLib Library Management System</span>
+    </div>
+    <hr style="margin: 30px 0; border: 1px solid #EDE9FE;">
+
+<h3 style="color: #4C1D95; margin-bottom: 20px;">
+    🔔 Notification Settings
+</h3>
+
+<div class="setting-item">
+    <strong>Notifications</strong>
+
+    <span>
+        {% if notifications_enabled %}
+            Enabled
+        {% else %}
+            Disabled
+        {% endif %}
+    </span>
+</div>
+
+<form method="POST">
+
+    <input type="hidden" name="action" value="notifications">
+
+    <input type="hidden"
+           name="notifications_enabled"
+           value="{{ 0 if notifications_enabled else 1 }}">
+
+    <button type="submit"
+        class="notification-btn {% if notifications_enabled %}disable-btn{% else %}enable-btn{% endif %}">
+
+    {% if notifications_enabled %}
+        Disable Notifications
+    {% else %}
+        Enable Notifications
+    {% endif %}
+
+</button>
+
+
+</form>
+{% if message and message_section == "notifications" %}
+<div class="settings-message {{ message_type }}">
+    {{ message }}
+</div>
+{% endif %}
+
+<hr style="margin: 30px 0; border: 1px solid #EDE9FE;">
+
+<h3 style="color: #4C1D95; margin-bottom: 20px;">
+    🎨 Appearance Settings
+</h3>
+
+<div class="setting-item">
+    <strong>Choose Theme</strong>
+    <span>
+        Current Theme:
+        {{ theme_preference|capitalize }}
+    </span>
+</div>
+
+<form method="POST">
+
+    <input type="hidden" name="action" value="theme">
+
+    <div class="theme-buttons">
+
+        <button type="submit"
+                name="theme_preference"
+                value="light"
+                class="theme-btn {% if theme_preference == 'light' %}active{% endif %}">
+            ☀️ Light Mode
+        </button>
+
+        <button type="submit"
+                name="theme_preference"
+                value="dark"
+                class="theme-btn {% if theme_preference == 'dark' %}active{% endif %}">
+            🌙 Dark Mode
+        </button>
+
+    </div>
+
+</form>
+
+{% if message and message_section == "theme" %}
+<div class="settings-message {{ message_type }}">
+    {{ message }}
+</div>
+{% endif %}
+
+
+
+<h3 style="color: #4C1D95; margin-bottom: 20px;">
+    🔐 Change Password
+</h3>
+
+{% if message and message_section == "password" %}
+
+{% if message_type == "success" %}
+<div id="password-message" class="settings-message" style="
+    background: #DCFCE7;
+    color: #166534;
+    border: 1px solid #86EFAC;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;">
+    {{ message }}
+</div>
+
+{% else %}
+<div id="password-message" class="settings-message" style="
+    background: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FCA5A5;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;">
+    {{ message }}
+</div>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const message = document.getElementById("password-message");
+
+    if (message) {
+        setTimeout(function() {
+            message.style.transition = "opacity 0.5s ease";
+            message.style.opacity = "0";
+
+            setTimeout(function() {
+                message.remove();
+            }, 500);
+
+        }, 3000);
+    }
+});
+</script>
+
+{% endif %}
+<form method="POST">
+    <input type="hidden" name="action" value="change_password">
+
+    <div style="margin-bottom: 18px;">
+        <label>Current Password</label>
+        <input type="password"
+               name="current_password"
+               required
+               style="width:100%; padding:12px; margin-top:8px;
+               border:1px solid #DDD6FE; border-radius:8px;">
+    </div>
+
+    <div style="margin-bottom: 18px;">
+        <label>New Password</label>
+        <input type="password"
+               name="new_password"
+               minlength="8"
+               required
+               style="width:100%; padding:12px; margin-top:8px;
+               border:1px solid #DDD6FE; border-radius:8px;">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <label>Confirm New Password</label>
+        <input type="password"
+               name="confirm_password"
+               minlength="8"
+               required
+               style="width:100%; padding:12px; margin-top:8px;
+               border:1px solid #DDD6FE; border-radius:8px;">
+    </div>
+
+    <div style="display:flex; gap:12px;">
+
+    <button type="submit"
+            style="flex:1; padding:13px;
+            background:#6D28D9; color:white;
+            border:none; border-radius:9px;
+            font-size:15px; font-weight:bold;
+            cursor:pointer;">
+        Update Password
+    </button>
+
+    <button type="reset"
+            style="flex:1; padding:13px;
+            background:#EDE9FE; color:#4C1D95;
+            border:1px solid #DDD6FE;
+            border-radius:9px;
+            font-size:15px; font-weight:bold;
+            cursor:pointer;">
+        Cancel
+    </button>
+
+</div>
+
+</form>
+
+    <a href="{{ url_for('home') }}" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const message = document.getElementById("password-message")
+                 || document.querySelector(".settings-message");
+
+    if (message) {
+
+        message.scrollIntoView({
+            behavior: "auto",
+            block: "center"
+        });
+
+        setTimeout(function() {
+            message.style.transition = "opacity 0.5s ease";
+            message.style.opacity = "0";
+
+            setTimeout(function() {
+                message.remove();
+            }, 500);
+
+        }, 3000);
+    }
+
+});
+</script>
+
+</body>
+</html>
